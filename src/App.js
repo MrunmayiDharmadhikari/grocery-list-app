@@ -1,23 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useRef } from "react";
+import "./App.css";
+
 
 function App() {
+
+
+const [inputlist, setInputList] = useState([]);
+
+const inputRef = useRef();
+
+const addItem = () => {
+  const newItem = inputRef.current.value;
+  inputRef.current.value="";
+  setInputList([...inputlist, newItem]);
+};
+
+const keyPressFunc = (event) => {
+  if (event.key === "Enter") {
+    addItem();
+  }
+};
+
+const itemMapper = (element) => {
+  return <li>{element}</li>;
+};
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h1>Grocery List App</h1>
+      <div className="card">
+        <div className="input">
+          <input
+            placeholder="Enter your items"
+            ref={inputRef}
+            onKeyPress={keyPressFunc}
+          />
+          <button onClick={addItem}>Add</button>
+        </div>
+        <div className="outputdisplay">
+          <ul>{inputlist.map(itemMapper)}</ul>
+        </div>
+      </div>
     </div>
   );
 }
